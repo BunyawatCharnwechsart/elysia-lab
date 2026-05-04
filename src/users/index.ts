@@ -7,7 +7,7 @@ export const users = new Elysia()
         if (error) throw error;
         return data 
     })
-    .post('/users', async ({body}) => {
+    .post('/users', async ({ body }) => {
         const { name, email, password } = body;
 
         const { data, error } = await supabase
