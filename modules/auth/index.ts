@@ -1,6 +1,7 @@
 import Elysia, { t } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 import { supabase } from "../../libs/supabase";
+import bcrypt from "bcryptjs";
 
 export const auth = new Elysia()
     .use(
@@ -30,10 +31,12 @@ export const auth = new Elysia()
             return { message: "email already exists" };
         }
 
+        const hashedPassword = await bcrypt.hash(password, 12);
+
         // สร้าง user ใหม่
         const { data: user, error } = await supabase
             .from("users")
-            .insert({ name, email, password })
+            .insert({ name, email, password: hashedPassword })
             .select()
             .single();
 
@@ -66,6 +69,8 @@ export const auth = new Elysia()
             set.status = 401;
             return { message: "email or password incorrect" };
         }
+
+        const isMatch = await bcrypt.compare(password, user.password);
 
         const token = await jwt.sign({
             uid: String(user.uid),
