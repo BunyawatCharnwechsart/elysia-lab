@@ -5,7 +5,9 @@ import { auth } from "../modules/auth";
 import { cors } from "@elysiajs/cors";
 
 new Elysia()
-  .get('/', () => 'hello elysia')
+  .get('/', () => 
+    'hello elysia (login,menus)'
+  )
   .use(cors())
   .use(auth)
   .use(users)
