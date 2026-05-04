@@ -62,7 +62,6 @@ export const auth = new Elysia()
             .from("users")
             .select("*")
             .eq("email", email)
-            .eq("password", password)
             .single();
 
         if (error || !user) {
