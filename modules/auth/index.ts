@@ -72,6 +72,11 @@ export const auth = new Elysia()
 
         const isMatch = await bcrypt.compare(password, user.password);
 
+        if (!isMatch) {
+            set.status = 401;
+            return { message: "email or password incorrect" };
+        }
+
         const token = await jwt.sign({
             uid: String(user.uid),
             email: String(user.email),
