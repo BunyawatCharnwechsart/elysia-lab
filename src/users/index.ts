@@ -8,11 +8,11 @@ export const users = new Elysia()
         return data 
     })
     .post('/users', async ({body}) => {
-        const { name } = body;
+        const { name, email, password } = body;
 
         const { data, error } = await supabase
             .from("users")
-            .insert({ name })
+            .insert({ name, email, password })
             .select()
             .single();
 
@@ -25,6 +25,8 @@ export const users = new Elysia()
     {
         body: t.Object({
             name: t.String({ minLength: 1 }),
+            email: t.String({ format: "email" }),
+            password: t.String({ minLength: 6 }),
         }),
     }
 );
